@@ -1,0 +1,25 @@
+version: '2'
+services:
+  magento:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      args:
+        - MAGENTO_DB_HOST=${MAGENTO_DB_HOST}
+        - MAGENTO_DB_NAME=${MAGENTO_DB_NAME}
+        - MAGENTO_DB_USER=${MAGENTO_DB_USER}
+        - MAGENTO_DB_PASS=${MAGENTO_DB_PASS}
+    restart: always
+    network_mode: bridge
+    #    cpu_shares: 128
+    #    mem_limit: 128m
+    ports:
+      - "80:80"
+    volumes:
+      - ../magento_base/:/app
+    env_file:
+      - magento.env
+    environment:
+      - PHP_IDE_CONFIG=localhost
+      - XDEBUG_CONFIG='remote_host=10.254.254.254 remote_port=9001'
+      - 'PHP_EXTENSIONS=bcmath bz2 calendar exif gd gettext intl mysqli pcntl pdo_mysql soap sockets sysvmsg sysvsem sysvshm opcache zip redis xsl xdebug'
